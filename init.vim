@@ -14,10 +14,10 @@ set mouse=a
 set clipboard=unnamed,unnamedplus
 set splitright splitbelow
 
-
 " Keep VisualMode after indent with > or <
 vmap < <gv
 vmap > >gv
+
 
 " move between panes to left/bottom/top/right
  nnoremap <C-h> <C-w>h
@@ -39,10 +39,16 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Press i to enter insert mode, and ii to exit insert mode.
 :inoremap ii <Esc>
-:inoremap jk <Esc>
-:inoremap kj <Esc>
+:inoremap jj <Esc>
+:inoremap kk <Esc>
 :vnoremap jk <Esc>
 :vnoremap kj <Esc>
+
+" Arrow key remapping
+" noremap ; l
+" noremap l k
+" noremap k j
+" noremap j h
 
 " Autocomand to remember las editing position
 augroup vimrc-remember-cursor-position
@@ -62,18 +68,25 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'scrooloose/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " Install fuzzy finder binary
     Plug 'junegunn/fzf.vim'               " Enable fuzzy finder in Vim
-    Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intelisense
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
     Plug 'sheerun/vim-polyglot'
     Plug 'ryanoasis/vim-devicons'
+    Plug 'vim-airline/vim-airline'
+    Plug 'edkolev/tmuxline.vim'
+    Plug 'itchyny/lightline.vim'
+    " these two plugins will add highlighting and indenting to JSX and TSX files.
+    Plug 'yuezk/vim-js'
+    Plug 'HerringtonDarkholme/yats.vim'
+    Plug 'maxmellon/vim-jsx-pretty'
+    Plug 'mattn/emmet-vim'
 call plug#end()
-
 " Colorscheme PaleNight
 if (has("termguicolors"))
  set termguicolors
 endif
 syntax enable
 colorscheme palenight
-
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
@@ -82,21 +95,18 @@ let g:NERDTreeStatusline = ''
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle
 nnoremap <silent> <C-a> :NERDTreeToggle<CR>
+
 " Use Ctrl-P to open the fuzzy file opener
 nnoremap <C-p> :Files<cr>
 
-" Set COC Global Extensions
-let g:coc_global_extensions = [
-    \ 'coc-tsserver',
-    \ 'coc-json',
-    \ 'coc-html',
-    \ 'coc-css',
-    \ 'coc-phpls',
-    \ 'coc-python',
-	\ 'coc-diagnostic'
-    \]
+" Install coc dependencies
+let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']  " list of CoC extensions needed
 
-" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" Emmet Shortcuts
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key=','
+
+"" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
 set encoding=UTF-8
 
@@ -128,5 +138,3 @@ endif
 " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-
