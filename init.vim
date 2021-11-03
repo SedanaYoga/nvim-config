@@ -1,9 +1,48 @@
-let mapleader = " "
+" Plugin for NVIM
+call plug#begin("~/.config/nvim/plugged")
+	Plug 'junegunn/fzf', {'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+	Plug 'pangloss/vim-javascript'
+	Plug 'peitalin/vim-jsx-typescript'
+	Plug 'leafgarland/typescript-vim'
+	Plug 'dracula/vim'
+    Plug 'drewtempelmeyer/palenight.vim'
+	Plug 'scrooloose/nerdtree'
+	Plug 'ryanoasis/vim-devicons'
+	Plug 'neoclide/coc.nvim', {'branch':'release'}
+	let g:coc_global_extensions = ['coc-tsserver',
+	\'coc-python',
+	\ 'coc-pydocstring',
+	\ 'coc-json',
+	\ 'coc-html-css-support',
+	\ 'coc-css',
+	\ 'coc-sql',
+	\ 'coc-yaml']
+    Plug 'mattn/emmet-vim'
+	" Plug 'sheerun/vim-polyglot',
+	Plug 'preservim/nerdcommenter'
+	Plug 'jparise/vim-graphql'
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
+    Plug 'edkolev/tmuxline.vim'
+	" post install (yarn install | npm install) then load plugin only for editing supported files
+	Plug 'prettier/vim-prettier', {
+	\ 'do': 'yarn install',
+	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+call plug#end()
 
-set nocompatible
+" Setting for NVIM
+set scrolloff=8
 set number
-set hlsearch
+set relativenumber
 set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set encoding=utf8
+let g:airline_powerline_fonts = 1
+set nocompatible
+set hlsearch
 set softtabstop=4
 set shiftwidth=4
 set expandtab
@@ -12,24 +51,29 @@ autocmd BufRead,BufNewFile *.md, *.txt setlocal wrap
 set noswapfile
 set mouse=a
 set clipboard=unnamed,unnamedplus
-set splitright splitbelow
+
+" Theming
+if (has("termguicolors"))
+set termguicolors
+endif
+syntax enable
+colorscheme dracula
 
 " Keep VisualMode after indent with > or <
 vmap < <gv
 vmap > >gv
 
-
 " move between panes to left/bottom/top/right
- nnoremap <C-h> <C-w>h
- nnoremap <C-j> <C-w>j
- nnoremap <C-k> <C-w>k
- nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
  " move split panes to left/bottom/top/right
- nnoremap <A-h> <C-W>H
- nnoremap <A-j> <C-W>J
- nnoremap <A-k> <C-W>K
- nnoremap <A-l> <C-W>L
+nnoremap <A-h> <C-W>H
+nnoremap <A-j> <C-W>J
+nnoremap <A-k> <C-W>K
+nnoremap <A-l> <C-W>L
 
 " move line or visually selected block - alt+j/k
 inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -37,18 +81,32 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-" Press i to enter insert mode, and ii to exit insert mode.
-:inoremap ii <Esc>
-:inoremap jj <Esc>
-:inoremap kk <Esc>
-:vnoremap jk <Esc>
-:vnoremap kj <Esc>
+" Key Mapping
+let mapleader = " "
+nnoremap <leader>pv :Vex<CR>
+nnoremap <leader>pf :Files<CR>
+nnoremap <C-p> :GFiles<CR>
 
-" Arrow key remapping
-" noremap ; l
-" noremap l k
-" noremap k j
-" noremap j h
+" Escape + Save Mapping
+inoremap jk <esc>:w<CR>
+inoremap kj <esc>:w<CR>
+inoremap jj <esc>:w<CR>
+inoremap kk <esc>:w<CR>
+inoremap ii <esc>:w<CR>
+
+" NerdTree Config
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 0
+let g:NERDTreeIgnore = ['node_modules']
+let NERDTreeStatusLine='NERDTree'
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Toggle
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+" open new split panes to right and below
+set splitright
+set splitbelow
 
 " Autocomand to remember las editing position
 augroup vimrc-remember-cursor-position
@@ -56,53 +114,20 @@ augroup vimrc-remember-cursor-position
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
 
-" open new split panes to right and below
-set splitright
-set splitbelow
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" open terminal on ctrl+n
+function! OpenTerminal()
+split term://zsh
+resize 10
+endfunction
+nnoremap <c-n> :call OpenTerminal()<CR>
+let g:prettier#autoformat_config_present = 1
+let g:prettier#config#config_precedence = 'prefer-file'
 
-" Pluggin with vim-plug
-call plug#begin('~/.config/nvim/plugged')
-    Plug 'tpope/vim-sensible'
-    Plug 'drewtempelmeyer/palenight.vim'
-    Plug 'dracula/vim'
-    Plug 'scrooloose/nerdtree'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " Install fuzzy finder binary
-    Plug 'junegunn/fzf.vim'               " Enable fuzzy finder in Vim
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
-    Plug 'sheerun/vim-polyglot'
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'vim-airline/vim-airline'
-    Plug 'edkolev/tmuxline.vim'
-    Plug 'itchyny/lightline.vim'
-    " these two plugins will add highlighting and indenting to JSX and TSX files.
-    Plug 'yuezk/vim-js'
-    Plug 'HerringtonDarkholme/yats.vim'
-    Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'mattn/emmet-vim'
-call plug#end()
-" Colorscheme PaleNight
-if (has("termguicolors"))
- set termguicolors
-endif
-syntax enable
-colorscheme palenight
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Toggle
-nnoremap <silent> <C-a> :NERDTreeToggle<CR>
-
-" Use Ctrl-P to open the fuzzy file opener
-nnoremap <C-p> :Files<cr>
-
-" Install coc dependencies
-let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']  " list of CoC extensions needed
-
-" Emmet Shortcuts
+" Emmet and COC configuration
 let g:user_emmet_mode='i'
 let g:user_emmet_leader_key=','
 
