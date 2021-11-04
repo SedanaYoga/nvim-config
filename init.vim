@@ -17,14 +17,18 @@ call plug#begin("~/.config/nvim/plugged")
 	\ 'coc-html-css-support',
 	\ 'coc-css',
 	\ 'coc-sql',
-	\ 'coc-yaml']
+    \ 'coc-yaml']
     Plug 'mattn/emmet-vim'
-	" Plug 'sheerun/vim-polyglot',
-	Plug 'preservim/nerdcommenter'
-	Plug 'jparise/vim-graphql'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
-    Plug 'edkolev/tmuxline.vim'
+    Plug 'tpope/vim-commentary' 
+    Plug 'sheerun/vim-polyglot',
+    Plug 'preservim/nerdcommenter'
+    Plug 'jparise/vim-graphql'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'yuezk/vim-js'
+    Plug 'maxmellon/vim-jsx-pretty'
+    Plug 'HerringtonDarkholme/yats.vim'
+   " Plug 'edkolev/tmuxline.vim'
 	" post install (yarn install | npm install) then load plugin only for editing supported files
 	Plug 'prettier/vim-prettier', {
 	\ 'do': 'yarn install',
@@ -57,7 +61,7 @@ if (has("termguicolors"))
 set termguicolors
 endif
 syntax enable
-colorscheme dracula
+colorscheme palenight
 
 " Keep VisualMode after indent with > or <
 vmap < <gv
@@ -80,6 +84,9 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
+
+noremap <silent> <C-S-Right> :vertical resize +5<CR>
+noremap <silent> <C-S-Left> :vertical resize -5<CR>
 
 " Key Mapping
 let mapleader = " "

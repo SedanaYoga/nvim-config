@@ -18,7 +18,6 @@ set splitright splitbelow
 vmap < <gv
 vmap > >gv
 
-
 " move between panes to left/bottom/top/right
  nnoremap <C-h> <C-w>h
  nnoremap <C-j> <C-w>j
@@ -43,6 +42,9 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 :inoremap kk <Esc>
 :vnoremap jk <Esc>
 :vnoremap kj <Esc>
+
+noremap <silent> <C-S-h> :vertical resize +10<CR>
+noremap <silent> <C-S-l> :vertical resize -10<CR>
 
 " Arrow key remapping
 " noremap ; l
