@@ -6,6 +6,7 @@ call plug#begin("~/.config/nvim/plugged")
 	Plug 'peitalin/vim-jsx-typescript'
 	Plug 'leafgarland/typescript-vim'
 	Plug 'dracula/vim'
+    Plug 'jiangmiao/auto-pairs'
     Plug 'drewtempelmeyer/palenight.vim'
 	Plug 'scrooloose/nerdtree'
 	Plug 'ryanoasis/vim-devicons'
@@ -39,16 +40,16 @@ call plug#end()
 set scrolloff=8
 set number
 set relativenumber
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 set encoding=utf8
 let g:airline_powerline_fonts = 1
 set nocompatible
 set hlsearch
-set softtabstop=4
-set shiftwidth=4
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set nowrap
 autocmd BufRead,BufNewFile *.md, *.txt setlocal wrap
@@ -62,6 +63,10 @@ set termguicolors
 endif
 syntax enable
 colorscheme palenight
+
+" Configuration for Auto Pairs
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutBackInsert = '<M-b>'
 
 " Keep VisualMode after indent with > or <
 vmap < <gv
@@ -87,12 +92,15 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 noremap <silent> <C-S-Right> :vertical resize +5<CR>
 noremap <silent> <C-S-Left> :vertical resize -5<CR>
+noremap <silent> <C-S-Up> :resize +5<CR>
+noremap <silent> <C-S-Down> :resize -5<CR>
 
 " Key Mapping
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
 nnoremap <leader>pf :Files<CR>
 nnoremap <C-p> :GFiles<CR>
+nnoremap <leader>e :set iskeyword-=_<cr>diw:set iskeyword+=_<cr>i
 
 " Escape + Save Mapping
 inoremap jk <esc>:w<CR>
