@@ -6,36 +6,39 @@ call plug#begin("~/.config/nvim/plugged")
 	Plug 'peitalin/vim-jsx-typescript'
 	Plug 'leafgarland/typescript-vim'
 	Plug 'dracula/vim'
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'drewtempelmeyer/palenight.vim'
+	Plug 'jiangmiao/auto-pairs'
+	Plug 'drewtempelmeyer/palenight.vim'
 	Plug 'scrooloose/nerdtree'
 	Plug 'ryanoasis/vim-devicons'
-	Plug 'neoclide/coc.nvim', {'branch':'release'}
-	let g:coc_global_extensions = ['coc-tsserver',
-	\'coc-python',
-	\ 'coc-pydocstring',
-	\ 'coc-json',
-	\ 'coc-html-css-support',
-	\ 'coc-css',
-	\ 'coc-sql',
-    \ 'coc-yaml']
-    Plug 'mattn/emmet-vim'
-    Plug 'tpope/vim-commentary' 
-    Plug 'sheerun/vim-polyglot',
-    Plug 'preservim/nerdcommenter'
-    Plug 'jparise/vim-graphql'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'yuezk/vim-js'
-    Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'HerringtonDarkholme/yats.vim'
-   " Plug 'edkolev/tmuxline.vim'
+	Plug 'mattn/emmet-vim'
+	Plug 'tpope/vim-commentary' 
+	Plug 'sheerun/vim-polyglot',
+	Plug 'preservim/nerdcommenter'
+	Plug 'jparise/vim-graphql'
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
+	Plug 'yuezk/vim-js'
+	Plug 'maxmellon/vim-jsx-pretty'
+	Plug 'HerringtonDarkholme/yats.vim'
+	Plug 'honza/vim-snippets'
+ " Plug 'edkolev/tmuxline.vim'
 	" post install (yarn install | npm install) then load plugin only for editing supported files
 	Plug 'prettier/vim-prettier', {
 	\ 'do': 'yarn install',
 	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+	Plug 'neoclide/coc.nvim', {'branch':'release'}
 call plug#end()
 
+" source $HOME/.config/nvim/plug-config/coc.vim
+let g:coc_global_extensions = ['coc-tsserver',
+			\'coc-python',
+			\ 'coc-pydocstring',
+			\ 'coc-json',
+			\ 'coc-snippets',
+			\ 'coc-html-css-support',
+			\ 'coc-css',
+			\ 'coc-sql',
+			\ 'coc-yaml']
 " Setting for NVIM
 set scrolloff=8
 set number
@@ -62,11 +65,14 @@ if (has("termguicolors"))
 set termguicolors
 endif
 syntax enable
-colorscheme palenight
+colorscheme dracula
 
 " Configuration for Auto Pairs
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutBackInsert = '<M-b>'
+
+" Python provider
+ let g:python3_host_prog = '/usr/bin/python3'
 
 " Keep VisualMode after indent with > or <
 vmap < <gv
@@ -123,7 +129,7 @@ nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 set splitright
 set splitbelow
 
-" Autocomand to remember las editing position
+" Autocomand to remember last editing position
 augroup vimrc-remember-cursor-position
   autocmd!
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -139,8 +145,8 @@ split term://zsh
 resize 10
 endfunction
 nnoremap <c-n> :call OpenTerminal()<CR>
-let g:prettier#autoformat_config_present = 1
-let g:prettier#config#config_precedence = 'prefer-file'
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
 
 " Emmet and COC configuration
 let g:user_emmet_mode='i'
@@ -191,6 +197,3 @@ nmap tc :tabclose
 nmap ss :split<Return><C-w>w
 nmap sv :vsplit<Return><C-w>w
 
-" Switch tab
-nmap <S-Tab> :tabprev<Return>
-nmap <Tab> :tabnext<Return>
