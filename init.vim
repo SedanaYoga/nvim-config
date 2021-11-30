@@ -191,9 +191,19 @@ nmap te :tabedit
 " List tab
 nmap tl :Unite tab
 " Close tab
-nmap tc :tabclose
-
+" nmap tc :tabclose
+" Tab Next
+nmap <leader><tab> :tabnext<CR>
+nmap <leader><S-tab> :tabprevious<CR>
 " Split window
 nmap ss :split<Return><C-w>w
 nmap sv :vsplit<Return><C-w>w
 
+" Comment binding
+nnoremap <C-_> :Commentary<cr>
+inoremap <C-_> <Esc>:Commentary<cr>ji
+vnoremap <C-_> ::Commentary<cr>
+
+" Save with Ctrl+s
+nnoremap <C-s> :w<cr>
+inoremap <C-s> <Esc>:w<cr>
