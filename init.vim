@@ -1,7 +1,8 @@
 " Plugin for NVIM
 call plug#begin("~/.config/nvim/plugged")
-	Plug 'junegunn/fzf', {'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
+	Plug 'nvim-lua/popup.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
 	Plug 'pangloss/vim-javascript'
 	Plug 'peitalin/vim-jsx-typescript'
 	Plug 'leafgarland/typescript-vim'
@@ -12,6 +13,7 @@ call plug#begin("~/.config/nvim/plugged")
 	Plug 'ryanoasis/vim-devicons'
 	Plug 'mattn/emmet-vim'
 	Plug 'tpope/vim-commentary' 
+  Plug 'tpope/vim-surround'
 	Plug 'sheerun/vim-polyglot',
 	Plug 'preservim/nerdcommenter'
 	Plug 'jparise/vim-graphql'
@@ -39,6 +41,7 @@ let g:coc_global_extensions = ['coc-tsserver',
 			\ 'coc-css',
 			\ 'coc-sql',
 			\ 'coc-yaml']
+
 " Setting for NVIM
 set scrolloff=8
 set number
@@ -74,7 +77,9 @@ let g:AutoPairsShortcutBackInsert = '<M-b>'
 " Python provider
  let g:python3_host_prog = '/usr/bin/python3'
 
-" Keep VisualMode after indent with > or <
+"{{{ Key Remapping }}} 
+
+ " Keep VisualMode after indent with > or <
 vmap < <gv
 vmap > >gv
 
@@ -101,27 +106,31 @@ noremap <silent> <C-S-Left> :vertical resize -5<CR>
 noremap <silent> <C-S-Up> :resize +5<CR>
 noremap <silent> <C-S-Down> :resize -5<CR>
 
-" Key Mapping
+" Map Leader
 let mapleader = " "
-nnoremap <leader>pv :Vex<CR>
-nnoremap <leader>pf :Files<CR>
-nnoremap <C-p> :GFiles<CR>
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fl <cmd>Telescope git_files<cr>
+
 nnoremap <leader>e :set iskeyword-=_<cr>diw:set iskeyword+=_<cr>i
 
 " Escape + Save Mapping
-inoremap jk <esc>:w<CR>
-inoremap kj <esc>:w<CR>
-inoremap jj <esc>:w<CR>
-inoremap kk <esc>:w<CR>
-inoremap ii <esc>:w<CR>
+inoremap jk <esc>
+inoremap kj <esc>
+inoremap jj <esc>
+inoremap ii <esc>
 
-" NerdTree Config
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 0
-let g:NERDTreeIgnore = ['node_modules']
-let NERDTreeStatusLine='NERDTree'
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" nerdtree config
+let g:nerdtreeshowhidden = 1
+let g:nerdtreeminimalui = 0
+let g:nerdtreeignore = ['node_modules']
+let nerdtreestatusline='nerdtree'
+" automaticaly close nvim if nerdtree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:nerdtree") && b:nerdtree.istabtree()) | q | endif
 " Toggle
 nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 
@@ -207,3 +216,21 @@ vnoremap <C-_> ::Commentary<cr>
 " Save with Ctrl+s
 nnoremap <C-s> :w<cr>
 inoremap <C-s> <Esc>:w<cr>
+
+"Multiple Cursor
+hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
+nmap <silent> <C-c> <Plug>(coc-cursors-position)
+nmap <expr> <silent> <C-d> <SID>select_current_word()
+function! s:select_current_word()
+  if !get(b:, 'coc_cursors_activated', 0)
+    return "\<Plug>(coc-cursors-word)"
+  endif
+  return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
+endfunc
+
+" Duplicate up and down
+nnoremap <S-A-Down> Yp
+nnoremap <S-A-Up> YP
+xnoremap <S-A-Down> :co '><CR>V'[=gv
+xnoremap <S-A-Up> :co '<-1<CR>V'[=gv
+
